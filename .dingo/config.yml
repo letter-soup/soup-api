@@ -1,0 +1,7 @@
+db:
+  connection-string: {{CONNECTION_STRING}}
+  provider: PostgreSQL
+migration:
+  down-required: true
+log:
+  level: Information
