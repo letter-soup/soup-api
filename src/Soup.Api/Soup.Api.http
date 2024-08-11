@@ -1,6 +1,0 @@
-@Soup.Api_HostAddress = http://localhost:5289
-
-GET {{Soup.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
