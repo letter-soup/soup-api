@@ -4,6 +4,8 @@ namespace Auth.Wiedersehen;
 
 internal static class WebAppExtensions
 {
+    private const string EnvVarPrefix = "AUTHW_";
+
     public static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
     {
         builder.Host.UseSerilog((ctx, lc) => lc
@@ -18,8 +20,10 @@ internal static class WebAppExtensions
 
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentityServer(options => { options.EmitStaticAudienceClaim = true; });
-        builder.Configuration.AddJsonFile(builder.GetAppSettingPath());
+        builder.Services.AddIdentityServer();
+        builder.Configuration
+            .AddJsonFile(builder.GetAppSettingPath())
+            .AddEnvironmentVariables(EnvVarPrefix);
 
         return builder;
     }

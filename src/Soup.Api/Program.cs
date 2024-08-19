@@ -11,6 +11,8 @@ internal static class Program
         var app = builder
             .ConfigureLogging()
             .ConfigureServices()
+            .ConfigureAuthentication()
+            .ConfigureAuthorization()
             .Build();
 
         await app.ConfigurePipeline().RunAsync();

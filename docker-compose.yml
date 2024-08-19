@@ -6,7 +6,14 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - '5000:8080'
-  
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SOUP_API_Auth__Jwt__Authority=http://auth.wiedersehen:8080
+      - SOUP_API_Auth__Jwt__ValidateAudience=false
+      - SOUP_API_Auth__Jwt__ValidIssuers__0=http://auth.wiedersehen:8080
+      - SOUP_API_Auth__Jwt__ValidIssuers__1=http://localhost:5002
+      - SOUP_API_Auth__Jwt__RequireHttpsMetadata=false
+
   auth.wiedersehen:
     image: auth.wiedersehen
     build:
