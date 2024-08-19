@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace Auth.Wiedersehen;
@@ -20,11 +21,20 @@ internal static class WebAppExtensions
 
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddIdentityServer();
         builder.Configuration
             .AddJsonFile(builder.GetAppSettingPath())
             .AddEnvironmentVariables(EnvVarPrefix);
-
+        builder.Services
+            .AddIdentityServer()
+            .AddServerSideSessions()
+            .AddConfigurationStore(options => {
+                options.ConfigureDbContext = b =>
+                    b.UseSqlServer(builder.Configuration.GetValue<string>("Database:ConnectionString"));
+            })
+            .AddOperationalStore(options => {
+                options.ConfigureDbContext = b =>
+                    b.UseSqlServer(builder.Configuration.GetValue<string>("Database:ConnectionString"));
+            });
         return builder;
     }
 
