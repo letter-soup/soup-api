@@ -13,5 +13,5 @@ end
 -- down
 if dingo.exists_table('ClientCorsOrigins', 'dbo') = 1
 begin
-    drop table dbo.ClientCorsOrigins;
+    drop table dbo.ClientCorsOrigins
 end

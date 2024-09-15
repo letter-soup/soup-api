@@ -13,5 +13,5 @@ end
 -- down
 if dingo.exists_table('ApiResourceScopes', 'dbo') = 1
 begin
-    drop table dbo.ApiResourceScopes;
+    drop table dbo.ApiResourceScopes
 end

@@ -13,5 +13,5 @@ end
 -- down
 if dingo.exists_table('ApiScopeClaims', 'dbo') = 1
 begin
-    drop table dbo.ApiScopeClaims;
+    drop table dbo.ApiScopeClaims
 end

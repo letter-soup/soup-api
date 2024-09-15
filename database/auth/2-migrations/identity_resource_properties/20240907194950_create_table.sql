@@ -14,5 +14,5 @@ end
 -- down
 if dingo.exists_table('IdentityResourceProperties', 'dbo') = 1
 begin
-    drop table dbo.IdentityResourceProperties;
+    drop table dbo.IdentityResourceProperties
 end

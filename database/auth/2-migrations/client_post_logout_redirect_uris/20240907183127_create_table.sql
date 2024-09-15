@@ -13,5 +13,5 @@ end
 -- down
 if dingo.exists_table('ClientPostLogoutRedirectUris', 'dbo') = 1
 begin
-    drop table dbo.ClientPostLogoutRedirectUris;
+    drop table dbo.ClientPostLogoutRedirectUris
 end

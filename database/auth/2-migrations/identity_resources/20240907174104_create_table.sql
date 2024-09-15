@@ -20,5 +20,5 @@ end
 -- down
 if dingo.exists_table('IdentityResources', 'dbo') = 1
 begin
-    drop table dbo.IdentityResources;
+    drop table dbo.IdentityResources
 end

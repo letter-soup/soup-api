@@ -13,5 +13,5 @@ end
 -- down
 if dingo.exists_table('ClientIdPRestrictions', 'dbo') = 1
 begin
-    drop table dbo.ClientIdPRestrictions;
+    drop table dbo.ClientIdPRestrictions
 end
