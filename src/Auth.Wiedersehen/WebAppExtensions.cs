@@ -29,11 +29,17 @@ internal static class WebAppExtensions
             .AddServerSideSessions()
             .AddConfigurationStore(options => {
                 options.ConfigureDbContext = b =>
-                    b.UseSqlServer(builder.Configuration.GetValue<string>("Database:ConnectionString"));
+                    b.UseNpgsql(
+                        builder.Configuration.GetValue<string>("Database:ConnectionString:ConfigurationDB"),
+                        sql => sql.MigrationsAssembly(GetMigrationAssembly())
+                    );
             })
             .AddOperationalStore(options => {
                 options.ConfigureDbContext = b =>
-                    b.UseSqlServer(builder.Configuration.GetValue<string>("Database:ConnectionString"));
+                    b.UseNpgsql(
+                        builder.Configuration.GetValue<string>("Database:ConnectionString:PersistentGrandDB"),
+                        sql => sql.MigrationsAssembly(GetMigrationAssembly())
+                    );
             });
         return builder;
     }
@@ -45,12 +51,16 @@ internal static class WebAppExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            // app.InitializeDatabase();
         }
         
         app.UseIdentityServer();
 
         return app;
+    }
+
+    private static string? GetMigrationAssembly()
+    {
+        return typeof(Program).Assembly.GetName().Name;
     }
 
     private static string GetAppSettingPath(this WebApplicationBuilder builder)

@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Auth.Wiedersehen.csproj", "."]
@@ -11,7 +11,7 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish -c $BUILD_CONFIGURATION --self-contained --runtime linux-musl-x64 -o /app/publish
 
 FROM alpine:latest AS final
-RUN apk add --no-cache libgcc libstdc++
+RUN apk add --no-cache libgcc libstdc++ icu-libs
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["./Auth.Wiedersehen"]

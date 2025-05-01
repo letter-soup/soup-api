@@ -22,9 +22,9 @@ internal static class Program
 
             await app.ConfigurePipeline().RunAsync();
         }
-        catch (Exception e)
+        catch (Exception ex) when (ex.GetType().Name is not "HostAbortedException")
         {
-            Log.Fatal(e, "Unhandled exception");
+            Log.Fatal(ex, "Unhandled exception");
             throw;
         }
         finally
