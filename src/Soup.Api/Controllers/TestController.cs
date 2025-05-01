@@ -8,9 +8,9 @@ public class TestController(IConfiguration configuration) : Controller
 {
     private readonly IConfiguration _configuration = configuration.Required(nameof(configuration));
 
-    [HttpGet, Route("api/test")]
+    [HttpGet, Route("api/v1/test")]
     public IActionResult Test()
     {
-        return Ok("Hello world: " + _configuration["AllowedHosts"]);
+        return Ok("Hello world: " + _configuration.GetValue<string>("Auth:Jwt:Authority"));
     }
 }

@@ -24,19 +24,33 @@ services:
       - '5002:8080'
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      AUTHW_Database__ConnectionString: Server=auth.wiedersehen.db;Database=auth_wiedersehen;User Id=sa;Password=Qwert1234_;
+      AUTHW_Database__ConnectionString: Server=auth.wiedersehen.db;Database=auth_wiedersehen;User Id=sa;Password=Qwert1234_;Pooling=true;TrustServerCertificate=true;Encrypt=false;
 
   auth.wiedersehen.db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: postgres:17-alpine
     restart: always
+    shm_size: 128mb
     environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: Qwert1234_
-      MSSQL_PID: Developer
+      POSTGRES_PASSWORD: Qwert1234_
     ports:
-      - "1433:1433"
+      - "5432:5432"
     volumes:
-      - auth_sql_vol:/var/opt/mssql
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 134217728 # 128*2^20 bytes = 128Mb
+
+#  auth.wiedersehen.db:
+#    image: mcr.microsoft.com/mssql/server:2022-latest
+#    restart: always
+#    environment:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: Qwert1234_
+#      MSSQL_PID: Developer
+#    ports:
+#      - "1433:1433"
+#    volumes:
+#      - auth_sql_vol:/var/opt/mssql
 
 volumes:
   auth_sql_vol:

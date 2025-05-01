@@ -45,8 +45,9 @@ internal static class WebAppExtensions
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            // app.InitializeDatabase();
         }
-
+        
         app.UseIdentityServer();
 
         return app;
