@@ -28,7 +28,7 @@ services:
       - auth-wiedersehen-db
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      AUTHW_Database__ConnectionString: Host=auth-wiedersehen-db;Database=auth_wiedersehen;Username=postgres;Password=Qwert1234_;
+      AUTHW_Database__ConnectionString__ApplicationDB: Host=auth-wiedersehen-db;Database=auth_wiedersehen;Username=postgres;Password=Qwert1234_;
       AUTHW_Database__ConnectionString__ConfigurationDB: Host=auth-wiedersehen-db;Database=configuration_db;Username=postgres;Password=Qwert1234_;
       AUTHW_Database__ConnectionString__PersistentGrandDB: Host=auth-wiedersehen-db;Database=persisted_grant_db;Username=postgres;Password=Qwert1234_;
 

@@ -1,3 +1,6 @@
+using Auth.Wiedersehen.Migrations;
+using Auth.Wiedersehen.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -24,6 +27,15 @@ internal static class WebAppExtensions
         builder.Configuration
             .AddJsonFile(builder.GetAppSettingPath())
             .AddEnvironmentVariables(EnvVarPrefix);
+
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("Database:ConnectionString:ApplicationDB"))
+        );
+
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
         builder.Services
             .AddIdentityServer()
             .AddServerSideSessions()
@@ -40,7 +52,11 @@ internal static class WebAppExtensions
                         builder.Configuration.GetValue<string>("Database:ConnectionString:PersistentGrandDB"),
                         sql => sql.MigrationsAssembly(GetMigrationAssembly())
                     );
-            });
+            })
+            .AddAspNetIdentity<ApplicationUser>();
+
+        builder.Services.AddAuthentication();
+        
         return builder;
     }
 
@@ -52,8 +68,9 @@ internal static class WebAppExtensions
         {
             app.UseDeveloperExceptionPage();
         }
-        
+
         app.UseIdentityServer();
+        app.UseAuthorization();
 
         return app;
     }
