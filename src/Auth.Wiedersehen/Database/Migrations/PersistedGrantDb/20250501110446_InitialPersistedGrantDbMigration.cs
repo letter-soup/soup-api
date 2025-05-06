@@ -1,10 +1,9 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-#nullable disable
-
-namespace Auth.Wiedersehen.Migrations.PersistedGrantDb
+namespace Auth.Wiedersehen.Database.Migrations.PersistedGrantDb
 {
     /// <inheritdoc />
     public partial class InitialPersistedGrantDbMigration : Migration

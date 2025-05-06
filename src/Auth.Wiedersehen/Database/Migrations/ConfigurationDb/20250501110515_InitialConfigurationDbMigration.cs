@@ -1,10 +1,9 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-#nullable disable
-
-namespace Auth.Wiedersehen.Migrations.ConfigurationDb
+namespace Auth.Wiedersehen.Database.Migrations.ConfigurationDb
 {
     /// <inheritdoc />
     public partial class InitialConfigurationDbMigration : Migration

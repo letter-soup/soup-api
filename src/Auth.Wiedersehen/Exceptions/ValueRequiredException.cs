@@ -1,4 +1,4 @@
-namespace Soup.Api.Exceptions;
+namespace Auth.Wiedersehen.Exceptions;
 
 public class ValueRequiredException : BaseApiException
 {

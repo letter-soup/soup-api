@@ -1,4 +1,5 @@
-﻿using Serilog;
+﻿using Auth.Wiedersehen.Extensions;
+using Serilog;
 
 namespace Auth.Wiedersehen;
 

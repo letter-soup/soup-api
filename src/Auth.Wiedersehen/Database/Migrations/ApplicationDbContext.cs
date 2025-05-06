@@ -1,8 +1,8 @@
+using Auth.Wiedersehen.Database.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Auth.Wiedersehen.Models;
 
-namespace Auth.Wiedersehen.Migrations;
+namespace Auth.Wiedersehen.Database.Migrations;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : IdentityDbContext<ApplicationUser>(options)

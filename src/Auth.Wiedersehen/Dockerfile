@@ -1,5 +1,6 @@
 ﻿FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+
 WORKDIR /src
 COPY ["Auth.Wiedersehen.csproj", "."]
 RUN dotnet restore
@@ -14,4 +15,5 @@ FROM alpine:latest AS final
 RUN apk add --no-cache libgcc libstdc++ icu-libs
 WORKDIR /app
 COPY --from=publish /app/publish .
+
 ENTRYPOINT ["./Auth.Wiedersehen"]

@@ -1,10 +1,11 @@
-using Auth.Wiedersehen.Migrations;
-using Auth.Wiedersehen.Models;
+using Auth.Wiedersehen.Controllers.Services;
+using Auth.Wiedersehen.Database.Migrations;
+using Auth.Wiedersehen.Database.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
-namespace Auth.Wiedersehen;
+namespace Auth.Wiedersehen.Extensions;
 
 internal static class WebAppExtensions
 {
@@ -24,6 +25,11 @@ internal static class WebAppExtensions
 
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.AddScoped<IUserService, UserService>();
+
+        builder.Services.AddControllers();
+        builder.Services.AddOpenApi();
+        
         builder.Configuration
             .AddJsonFile(builder.GetAppSettingPath())
             .AddEnvironmentVariables(EnvVarPrefix);
@@ -63,6 +69,7 @@ internal static class WebAppExtensions
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         app.UseSerilogRequestLogging();
+        app.MapOpenApi();
 
         if (app.Environment.IsDevelopment())
         {
