@@ -1,6 +1,6 @@
 namespace Auth.Wiedersehen.Extensions;
 
-public static class StringExtensions
+internal static class StringExtensions
 {
     public static string Normalize(this string str)
     {

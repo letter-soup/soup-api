@@ -1,6 +1,8 @@
+using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.Database.Migrations;
 using Auth.Wiedersehen.Database.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -16,9 +18,11 @@ internal static class WebAppExtensions
         builder.Host.UseSerilog((ctx, lc) => lc
             .WriteTo.Console(
                 outputTemplate:
-                "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
+                "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}"
+            )
             .Enrich.FromLogContext()
-            .ReadFrom.Configuration(ctx.Configuration));
+            .ReadFrom.Configuration(ctx.Configuration)
+        );
 
         return builder;
     }
@@ -26,10 +30,11 @@ internal static class WebAppExtensions
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApi();
-        
+
         builder.Configuration
             .AddJsonFile(builder.GetAppSettingPath())
             .AddEnvironmentVariables(EnvVarPrefix);
@@ -45,30 +50,35 @@ internal static class WebAppExtensions
         builder.Services
             .AddIdentityServer()
             .AddServerSideSessions()
-            .AddConfigurationStore(options => {
-                options.ConfigureDbContext = b =>
-                    b.UseNpgsql(
-                        builder.Configuration.GetValue<string>("Database:ConnectionString:ConfigurationDB"),
-                        sql => sql.MigrationsAssembly(GetMigrationAssembly())
-                    );
-            })
-            .AddOperationalStore(options => {
-                options.ConfigureDbContext = b =>
-                    b.UseNpgsql(
-                        builder.Configuration.GetValue<string>("Database:ConnectionString:PersistentGrandDB"),
-                        sql => sql.MigrationsAssembly(GetMigrationAssembly())
-                    );
-            })
+            .AddConfigurationStore(options =>
+                {
+                    options.ConfigureDbContext = b =>
+                        b.UseNpgsql(
+                            builder.Configuration.GetValue<string>("Database:ConnectionString:ConfigurationDB"),
+                            sql => sql.MigrationsAssembly(GetMigrationAssembly())
+                        );
+                }
+            )
+            .AddOperationalStore(options =>
+                {
+                    options.ConfigureDbContext = b =>
+                        b.UseNpgsql(
+                            builder.Configuration.GetValue<string>("Database:ConnectionString:PersistentGrandDB"),
+                            sql => sql.MigrationsAssembly(GetMigrationAssembly())
+                        );
+                }
+            )
             .AddAspNetIdentity<ApplicationUser>();
 
         builder.Services.AddAuthentication();
-        
+
         return builder;
     }
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
         app.UseSerilogRequestLogging();
+        app.MapControllers();
         app.MapOpenApi();
 
         if (app.Environment.IsDevelopment())
