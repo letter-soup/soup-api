@@ -4,4 +4,5 @@ namespace Auth.Wiedersehen.Database.Models;
 
 public class ApplicationUser : IdentityUser
 {
+    public DateTime TermsAcceptanceTime { get; set; }
 }
