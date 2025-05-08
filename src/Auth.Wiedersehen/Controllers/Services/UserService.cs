@@ -1,5 +1,6 @@
 using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.Database.Models;
+using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Extensions;
 using Microsoft.AspNetCore.Identity;
 
@@ -15,6 +16,7 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
             new ApplicationUser
             {
                 Email = request.Email,
+                UserName = request.Email,
                 TermsAcceptanceTime = DateTime.UtcNow,
             },
             request.Password
@@ -22,7 +24,7 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
 
         if (!result.Succeeded)
         {
-            throw new Exception("Failed to create user");
+            throw new HttpResponseException(result.ToKeyValuePairs(), StatusCodes.Status409Conflict);
         }
 
         return new CreateUserResult();

@@ -1,6 +1,6 @@
 namespace Auth.Wiedersehen.Exceptions;
 
-public class ValueRequiredException : BaseApiException
+internal class ValueRequiredException : BaseApiException
 {
 	private const string ErrorPrefix = "Missing required argument: {0}";
 

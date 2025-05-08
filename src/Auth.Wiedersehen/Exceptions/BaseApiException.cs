@@ -1,3 +1,12 @@
 namespace Auth.Wiedersehen.Exceptions;
 
-public abstract class BaseApiException(string? message) : ApplicationException(message);
+internal class BaseApiException : ApplicationException
+{
+    protected BaseApiException()
+    {
+    }
+
+    public BaseApiException(string message) : base(message)
+    {
+    }
+}

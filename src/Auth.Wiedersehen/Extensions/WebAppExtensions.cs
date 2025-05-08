@@ -2,6 +2,7 @@ using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.Database.Migrations;
 using Auth.Wiedersehen.Database.Models;
+using Auth.Wiedersehen.Exceptions;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +33,7 @@ internal static class WebAppExtensions
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers(options => options.Filters.Add<HttpResponseExceptionFilter>());
         builder.Services.AddOpenApi();
 
         builder.Configuration
@@ -40,7 +41,7 @@ internal static class WebAppExtensions
             .AddEnvironmentVariables(EnvVarPrefix);
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("Database:ConnectionString:ApplicationDB"))
+            options.UseNpgsql(builder.Configuration.GetConnectionString("ApplicationDB"))
         );
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -54,7 +55,7 @@ internal static class WebAppExtensions
                 {
                     options.ConfigureDbContext = b =>
                         b.UseNpgsql(
-                            builder.Configuration.GetValue<string>("Database:ConnectionString:ConfigurationDB"),
+                            builder.Configuration.GetConnectionString("ConfigurationDB"),
                             sql => sql.MigrationsAssembly(GetMigrationAssembly())
                         );
                 }
@@ -63,7 +64,7 @@ internal static class WebAppExtensions
                 {
                     options.ConfigureDbContext = b =>
                         b.UseNpgsql(
-                            builder.Configuration.GetValue<string>("Database:ConnectionString:PersistentGrandDB"),
+                            builder.Configuration.GetConnectionString("PersistentGrandDB"),
                             sql => sql.MigrationsAssembly(GetMigrationAssembly())
                         );
                 }

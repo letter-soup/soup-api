@@ -1,5 +1,6 @@
 using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.Controllers.Services;
+using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ public class UserController(
         var validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
-            return validationResult.ToBadRequest();
+            throw new HttpResponseException(validationResult.ToKeyValuePairs());
         }
 
         var result = await _userService.CreateAsync(request);

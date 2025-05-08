@@ -1,27 +1,16 @@
 using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.Wiedersehen.Extensions;
 
 internal static class ValidationResultExtensions
 {
-    public static IActionResult ToBadRequest(this ValidationResult result)
+    public static IEnumerable<KeyValuePair<string, string>> ToKeyValuePairs(this ValidationResult result)
     {
-        return new BadRequestObjectResult(
-            new
-            {
-                StatusCode = StatusCodes.Status400BadRequest,
-                Errors = result.Errors.Select(Shorten),
-            }
-        );
+        return result.Errors.Select(ToKeyValuePair);
     }
 
-    private static object Shorten(ValidationFailure failure)
+    private static KeyValuePair<string, string> ToKeyValuePair(ValidationFailure failure)
     {
-        return new
-        {
-            failure.PropertyName,
-            failure.ErrorMessage,
-        };
+        return new KeyValuePair<string, string>(failure.PropertyName, failure.ErrorMessage);
     }
 }
