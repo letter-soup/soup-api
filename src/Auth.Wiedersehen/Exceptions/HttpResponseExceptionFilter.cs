@@ -1,3 +1,4 @@
+using Auth.Wiedersehen.Controllers.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -15,14 +16,9 @@ internal class HttpResponseExceptionFilter : IOrderedFilter, IActionFilter
     {
         if (context.Exception is not HttpResponseException exception) return;
 
-        context.Result = new ObjectResult(
-            new
-            {
-                exception.StatusCode,
-                exception.Errors,
-            }
-        )
+        context.Result = new ObjectResult(null)
         {
+            Value = new ErrorDetails(exception.StatusCode, exception.Errors),
             StatusCode = exception.StatusCode
         };
 

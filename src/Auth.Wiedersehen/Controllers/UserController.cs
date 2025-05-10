@@ -14,6 +14,9 @@ public class UserController(IUserService userService) : Controller
     private readonly IUserService _userService = userService.Required(nameof(userService));
 
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> CreateUserAsync(
         [FromServices] IValidator<CreateUserRequest> validator,
         [FromBody] CreateUserRequest request

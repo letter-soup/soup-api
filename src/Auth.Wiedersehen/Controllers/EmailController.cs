@@ -4,7 +4,6 @@ using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace Auth.Wiedersehen.Controllers;
 
@@ -15,6 +14,9 @@ public class EmailController(IEmailService emailService) : Controller
     private readonly IEmailService _emailService = emailService.Required(nameof(emailService));
 
     [HttpGet("is-available")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType<ErrorDetails>(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType<ErrorDetails>(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> EmailAvailableAsync(
         [FromServices] IValidator<EmailAvailableRequest> validator,
         [FromQuery] EmailAvailableRequest request
