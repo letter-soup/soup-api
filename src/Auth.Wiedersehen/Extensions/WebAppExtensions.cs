@@ -31,7 +31,9 @@ internal static class WebAppExtensions
     public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IEmailService, EmailService>();
         builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
+        builder.Services.AddScoped<IValidator<EmailAvailableRequest>, EmailAvailableRequestValidator>();
 
         builder.Services.AddControllers(options => options.Filters.Add<HttpResponseExceptionFilter>());
         builder.Services.AddOpenApi();

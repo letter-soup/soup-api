@@ -10,7 +10,7 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager.Required(nameof(userManager));
 
-    public async Task<CreateUserResult> CreateAsync(CreateUserRequest request)
+    public async Task CreateAsync(CreateUserRequest request)
     {
         var result = await _userManager.CreateAsync(
             new ApplicationUser
@@ -26,7 +26,5 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
         {
             throw new HttpResponseException(result.ToKeyValuePairs(), StatusCodes.Status409Conflict);
         }
-
-        return new CreateUserResult();
     }
 }

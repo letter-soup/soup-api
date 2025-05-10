@@ -9,9 +9,7 @@ namespace Auth.Wiedersehen.Controllers;
 
 [ApiController]
 [Route("api/v1/user")]
-public class UserController(
-    IUserService userService
-) : Controller
+public class UserController(IUserService userService) : Controller
 {
     private readonly IUserService _userService = userService.Required(nameof(userService));
 
@@ -27,7 +25,8 @@ public class UserController(
             throw new HttpResponseException(validationResult.ToKeyValuePairs());
         }
 
-        var result = await _userService.CreateAsync(request);
+        await _userService.CreateAsync(request);
+
         return Created();
     }
 }

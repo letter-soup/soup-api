@@ -4,5 +4,5 @@ namespace Auth.Wiedersehen.Controllers.Services;
 
 public interface IUserService
 {
-    Task<CreateUserResult> CreateAsync(CreateUserRequest request);
+    Task CreateAsync(CreateUserRequest request);
 }
