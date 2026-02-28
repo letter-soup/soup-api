@@ -8,6 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <InternalsVisibleTo Include="Auth.Wiedersehen.IntegrationTests" />
+        <InternalsVisibleTo Include="Auth.Wiedersehen.UnitTests" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Duende.IdentityServer" Version="7.4.6" />
         <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.4.6" />
         <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.4.6" />

@@ -3,7 +3,7 @@ using Serilog;
 
 namespace Auth.Wiedersehen;
 
-internal static class Program
+internal sealed class Program
 {
     public static async Task Main(string[] args)
     {
@@ -23,7 +23,7 @@ internal static class Program
 
             await app.ConfigurePipeline().RunAsync();
         }
-        catch (Exception ex) when (ex.GetType().Name is not "HostAbortedException")
+        catch (Exception ex) when (ex.GetType().Name is not nameof(HostAbortedException))
         {
             Log.Fatal(ex, "Unhandled exception");
             throw;
