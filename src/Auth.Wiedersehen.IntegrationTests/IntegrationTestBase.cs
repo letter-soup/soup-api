@@ -17,6 +17,7 @@ public abstract class IntegrationTestBase : IAsyncLifetime
         .Build();
 
     protected HttpClient Client { get; private set; } = null!;
+    protected readonly IFixture Fixture = new Fixture();
 
     public async Task InitializeAsync()
     {

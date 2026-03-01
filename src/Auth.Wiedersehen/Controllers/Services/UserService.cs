@@ -10,21 +10,22 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager.Required(nameof(userManager));
 
-    public async Task CreateAsync(CreateUserRequest request)
+    public async Task<CreateUserResponse> CreateAsync(CreateUserRequest request)
     {
-        var result = await _userManager.CreateAsync(
-            new ApplicationUser
-            {
-                Email = request.Email,
-                UserName = request.Email,
-                TermsAcceptanceTime = DateTime.UtcNow,
-            },
-            request.Password
-        );
+        var user = new ApplicationUser
+        {
+            Email = request.Email,
+            UserName = request.Email,
+            TermsAcceptanceTime = DateTime.UtcNow,
+        };
+
+        var result = await _userManager.CreateAsync(user, request.Password);
 
         if (!result.Succeeded)
         {
             throw new HttpResponseException(result.ToKeyValuePairs(), StatusCodes.Status409Conflict);
         }
+
+        return new CreateUserResponse(user.Id);
     }
 }
