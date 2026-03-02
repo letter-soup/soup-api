@@ -1,7 +1,10 @@
 using Auth.Wiedersehen.Controllers.Models;
+using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.UnitTests.Extensions;
 using FluentValidation.TestHelper;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
+using Moq;
 
 namespace Auth.Wiedersehen.UnitTests;
 
@@ -11,7 +14,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
     
     public CreateUserRequestValidatorTests()
     {
-        _validator = new CreateUserRequestValidator(Configuration);
+        _validator = new CreateUserRequestValidator(Configuration, SetupLocalizer<CreateUserRequestValidator>());
     }
 
     [Fact]
@@ -20,6 +23,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         var model = new CreateUserRequest(string.Empty, Fixture.CreatePassword(), true);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Email:Missing");
     }
 
     [Fact]
@@ -28,6 +32,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         var model = new CreateUserRequest(Fixture.Create<string>(), Fixture.CreatePassword(), true);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Email:Invalid");
     }
 
     [Fact]
@@ -36,6 +41,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         var model = new CreateUserRequest(Fixture.CreateEmail(), string.Empty, true);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:Missing");
     }
 
     [Fact]
@@ -49,6 +55,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         );
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:TooShort");
     }
 
     [Fact]
@@ -61,6 +68,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         );
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:UppercaseMissing");
     }
 
     [Fact]
@@ -73,6 +81,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         );
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:LowercaseMissing");
     }
 
     [Fact]
@@ -85,6 +94,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         );
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:DigitMissing");
     }
 
     [Fact]
@@ -97,6 +107,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         );
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Password:SpecialMissing");
     }
 
     [Fact]
@@ -105,6 +116,7 @@ public class CreateUserRequestValidatorTests : UnitTestsBase
         var model = new CreateUserRequest(Fixture.CreateEmail(), Fixture.CreatePassword(), false);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.TermsAccepted);
+        result.Errors.Should().ContainSingle(error => error.ErrorMessage == "Terms:NotAccepted");
     }
 
     [Fact]

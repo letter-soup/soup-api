@@ -1,3 +1,4 @@
+using Auth.Wiedersehen.Controllers.Services;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -20,5 +21,14 @@ public class UnitTestsBase
         
         Configuration = configMock.Object;
         Fixture = new Fixture();
+    }
+
+    protected ILocalizer<T> SetupLocalizer<T>()
+    {
+        var localizerMock = new Mock<ILocalizer<T>>();
+        localizerMock.Setup(x => x.GetString(It.IsAny<string>())).Returns((string key) => key);
+        localizerMock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>())).Returns((string key, object[] _) => key);
+        
+        return localizerMock.Object;
     }
 }

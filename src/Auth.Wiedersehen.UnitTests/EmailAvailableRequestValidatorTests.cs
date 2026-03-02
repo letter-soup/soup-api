@@ -6,7 +6,12 @@ namespace Auth.Wiedersehen.UnitTests;
 
 public class EmailAvailableRequestValidatorTests : UnitTestsBase
 {
-    private readonly EmailAvailableRequestValidator _validator = new();
+    private readonly EmailAvailableRequestValidator _validator;
+    
+    public EmailAvailableRequestValidatorTests()
+    {
+        _validator = new EmailAvailableRequestValidator(SetupLocalizer<EmailAvailableRequestValidator>());
+    }
 
     [Fact]
     public void GivenEmptyEmail_ShouldHaveError()
@@ -14,6 +19,7 @@ public class EmailAvailableRequestValidatorTests : UnitTestsBase
         var model = new EmailAvailableRequest(string.Empty);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
+        result.Errors.Should().ContainSingle(x => x.ErrorMessage == "Email:Missing");
     }
 
     [Fact]
@@ -22,6 +28,7 @@ public class EmailAvailableRequestValidatorTests : UnitTestsBase
         var model = new EmailAvailableRequest(Fixture.Create<string>());
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
+        result.Errors.Should().ContainSingle(x => x.ErrorMessage == "Email:Invalid");
     }
 
     [Fact]

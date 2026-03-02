@@ -1,3 +1,4 @@
+using Auth.Wiedersehen.Controllers.Services;
 using FluentValidation;
 
 namespace Auth.Wiedersehen.Controllers.Models;
@@ -7,20 +8,30 @@ public record CreateUserResponse(string UserId);
 
 public class CreateUserRequestValidator : AbstractValidator<CreateUserRequest>
 {
-    public CreateUserRequestValidator(IConfiguration configuration)
+    public CreateUserRequestValidator(IConfiguration configuration, ILocalizer<CreateUserRequestValidator> localizer)
     {
+        var passwordMinLength = configuration.GetValue<int>("Password:MinLength");
+        
         RuleFor(x => x.Email)
             .NotEmpty()
-            .EmailAddress();
+            .WithMessage(localizer.GetString("Email:Missing"))
+            .EmailAddress()
+            .WithMessage(localizer.GetString("Email:Invalid"));
         RuleFor(x => x.Password)
             .NotEmpty()
-            .MinimumLength(configuration.GetValue<int>("Password:MinLength"))
-            .Matches("[A-Z]").WithMessage("Password must contain at least one uppercase letter.")
-            .Matches("[a-z]").WithMessage("Password must contain at least one lowercase letter.")
-            .Matches("[0-9]").WithMessage("Password must contain at least one digit.")
-            .Matches("[^a-zA-Z0-9]").WithMessage("Password must contain at least one special character.");
+            .WithMessage(localizer.GetString("Password:Missing"))
+            .MinimumLength(passwordMinLength)
+            .WithMessage(localizer.GetString("Password:TooShort", passwordMinLength))
+            .Matches("[A-Z]")
+            .WithMessage(localizer.GetString("Password:UppercaseMissing"))
+            .Matches("[a-z]")
+            .WithMessage(localizer.GetString("Password:LowercaseMissing"))
+            .Matches("[0-9]")
+            .WithMessage(localizer.GetString("Password:DigitMissing"))
+            .Matches("[^a-zA-Z0-9]")
+            .WithMessage(localizer.GetString("Password:SpecialMissing"));
         RuleFor(x => x.TermsAccepted)
             .Equal(true)
-            .WithMessage("You must accept the terms and conditions");
+            .WithMessage(localizer.GetString("Terms:NotAccepted"));
     }
 }

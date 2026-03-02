@@ -36,6 +36,9 @@ internal static class WebAppExtensions
         builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
         builder.Services.AddScoped<IValidator<EmailAvailableRequest>, EmailAvailableRequestValidator>();
 
+        builder.Services.AddTransient(typeof(ILocalizer<>), typeof(LocalizerAdapter<>));
+
+        builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
         builder.Services.AddControllers(options => options.Filters.Add<HttpResponseExceptionFilter>());
         builder.Services.AddOpenApi();
 
@@ -81,6 +84,14 @@ internal static class WebAppExtensions
 
     public static WebApplication ConfigurePipeline(this WebApplication app)
     {
+        var supportedCultures = new[] { "en-US", "en" };
+        var localizationOptions = new RequestLocalizationOptions()
+            .SetDefaultCulture(supportedCultures[0])
+            .AddSupportedCultures(supportedCultures)
+            .AddSupportedUICultures(supportedCultures);
+
+        app.UseRequestLocalization(localizationOptions);
+
         app.UseSerilogRequestLogging();
         app.MapControllers();
         app.MapOpenApi();
