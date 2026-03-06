@@ -1,4 +1,5 @@
 using Auth.Wiedersehen.Database.Migrations;
+using Auth.Wiedersehen.IntegrationTests.Extensions;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;

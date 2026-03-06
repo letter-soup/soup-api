@@ -58,28 +58,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Password:UppercaseMissing" xml:space="preserve">
+  <data name="Error:Password:UppercaseMissing" xml:space="preserve">
     <value>Password must contain at least one uppercase letter.</value>
   </data>
-  <data name="Password:LowercaseMissing" xml:space="preserve">
+  <data name="Error:Password:LowercaseMissing" xml:space="preserve">
     <value>Password must contain at least one lowercase letter.</value>
   </data>
-  <data name="Password:DigitMissing" xml:space="preserve">
+  <data name="Error:Password:DigitMissing" xml:space="preserve">
     <value>Password must contain at least one digit.</value>
   </data>
-  <data name="Password:SpecialMissing" xml:space="preserve">
+  <data name="Error:Password:SpecialMissing" xml:space="preserve">
     <value>Password must contain at least one special character.</value>
   </data>
-  <data name="Password:TooShort" xml:space="preserve">
+  <data name="Error:Password:TooShort" xml:space="preserve">
     <value>Password is too short. Min length is {0}.</value>
   </data>
-  <data name="Terms:NotAccepted" xml:space="preserve">
+  <data name="Error:Password:Missing" xml:space="preserve">
+    <value>Password is missing.</value>
+  </data>
+  <data name="Error:Terms:NotAccepted" xml:space="preserve">
     <value>You must accept the terms and conditions</value>
   </data>
-  <data name="Email:Missing" xml:space="preserve">
+  <data name="Error:Email:Missing" xml:space="preserve">
     <value>Email is missing.</value>
   </data>
-  <data name="Email:Invalid" xml:space="preserve">
+  <data name="Error:Email:Invalid" xml:space="preserve">
     <value>Email has invalid format.</value>
   </data>
 </root>

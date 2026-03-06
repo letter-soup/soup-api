@@ -1,4 +1,5 @@
 using Auth.Wiedersehen.Controllers.Models;
+using Auth.Wiedersehen.Localization;
 using Auth.Wiedersehen.UnitTests.Extensions;
 using FluentValidation.TestHelper;
 
@@ -10,7 +11,7 @@ public class EmailAvailableRequestValidatorTests : UnitTestsBase
     
     public EmailAvailableRequestValidatorTests()
     {
-        _validator = new EmailAvailableRequestValidator(SetupLocalizer<EmailAvailableRequestValidator>());
+        _validator = new EmailAvailableRequestValidator(Localizer);
     }
 
     [Fact]
@@ -19,7 +20,7 @@ public class EmailAvailableRequestValidatorTests : UnitTestsBase
         var model = new EmailAvailableRequest(string.Empty);
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
-        result.Errors.Should().ContainSingle(x => x.ErrorMessage == "Email:Missing");
+        result.Errors.Should().ContainSingle(x => x.ErrorMessage == LocalizationKey.Error.Email.Missing);
     }
 
     [Fact]
@@ -28,7 +29,7 @@ public class EmailAvailableRequestValidatorTests : UnitTestsBase
         var model = new EmailAvailableRequest(Fixture.Create<string>());
         var result = _validator.TestValidate(model);
         result.ShouldHaveValidationErrorFor(x => x.Email);
-        result.Errors.Should().ContainSingle(x => x.ErrorMessage == "Email:Invalid");
+        result.Errors.Should().ContainSingle(x => x.ErrorMessage == LocalizationKey.Error.Email.Invalid);
     }
 
     [Fact]

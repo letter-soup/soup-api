@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Auth.Wiedersehen.IntegrationTests;
+namespace Auth.Wiedersehen.IntegrationTests.Extensions;
 
 public static class ServiceCollectionExtensions
 {

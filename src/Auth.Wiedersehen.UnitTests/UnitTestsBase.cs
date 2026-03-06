@@ -1,4 +1,6 @@
+using Auth.Wiedersehen.Configuration;
 using Auth.Wiedersehen.Controllers.Services;
+using Auth.Wiedersehen.Localization;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -8,6 +10,7 @@ public class UnitTestsBase
 {
     protected readonly IConfiguration Configuration;
     protected readonly IFixture Fixture;
+    protected readonly ILocalizer Localizer;
     
     private const int PasswordMinLength = 8;
 
@@ -17,18 +20,18 @@ public class UnitTestsBase
         
         var passwordMinLength = new Mock<IConfigurationSection>();
         passwordMinLength.Setup(x => x.Value).Returns(PasswordMinLength.ToString());
-        configMock.Setup(x => x.GetSection("Password:MinLength")).Returns(passwordMinLength.Object);
+        configMock.Setup(x => x.GetSection(ConfigurationKey.Password.MinLength)).Returns(passwordMinLength.Object);
         
         Configuration = configMock.Object;
         Fixture = new Fixture();
+        Localizer = SetupLocalizer();
     }
 
-    protected ILocalizer<T> SetupLocalizer<T>()
+    private ILocalizer SetupLocalizer()
     {
-        var localizerMock = new Mock<ILocalizer<T>>();
-        localizerMock.Setup(x => x.GetString(It.IsAny<string>())).Returns((string key) => key);
-        localizerMock.Setup(x => x.GetString(It.IsAny<string>(), It.IsAny<object[]>())).Returns((string key, object[] _) => key);
-        
+        var localizerMock = new Mock<ILocalizer>();
+        localizerMock.Setup(x => x[It.IsAny<string>()]).Returns((string key) => key);
+        localizerMock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()]).Returns((string key, object[] _) => key);
         return localizerMock.Object;
     }
 }
