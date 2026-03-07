@@ -1,11 +1,9 @@
-using Auth.Wiedersehen.Controllers.Models;
-using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Auth.Wiedersehen.Controllers;
+namespace Auth.Wiedersehen.Users;
 
 [ApiController]
 [Route("api/v1/user")]

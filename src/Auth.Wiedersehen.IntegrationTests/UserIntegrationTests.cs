@@ -1,7 +1,6 @@
 using System.Net;
-using System.Net.Http.Json;
-using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.Users;
 
 namespace Auth.Wiedersehen.IntegrationTests;
 

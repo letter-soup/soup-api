@@ -1,7 +1,7 @@
 using Auth.Wiedersehen.Localization;
 using FluentValidation;
 
-namespace Auth.Wiedersehen.Controllers.Models;
+namespace Auth.Wiedersehen.Emails;
 
 public record EmailAvailableRequest(string Email);
 

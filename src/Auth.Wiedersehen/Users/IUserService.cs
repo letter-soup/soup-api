@@ -1,6 +1,4 @@
-using Auth.Wiedersehen.Controllers.Models;
-
-namespace Auth.Wiedersehen.Controllers.Services;
+namespace Auth.Wiedersehen.Users;
 
 public interface IUserService
 {

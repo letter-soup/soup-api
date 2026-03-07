@@ -1,10 +1,8 @@
-using Auth.Wiedersehen.Controllers.Models;
-using Auth.Wiedersehen.Database.Models;
 using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Extensions;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.Wiedersehen.Controllers.Services;
+namespace Auth.Wiedersehen.Users;
 
 internal sealed class UserService(UserManager<ApplicationUser> userManager) : IUserService
 {

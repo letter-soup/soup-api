@@ -1,4 +1,4 @@
-using Auth.Wiedersehen.Controllers.Models;
+using Auth.Wiedersehen.Emails;
 using Auth.Wiedersehen.Localization;
 using Auth.Wiedersehen.UnitTests.Extensions;
 using FluentValidation.TestHelper;

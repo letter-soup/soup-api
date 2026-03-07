@@ -1,12 +1,11 @@
+using Auth.Wiedersehen.Authentication;
 using Auth.Wiedersehen.Configuration;
-using Auth.Wiedersehen.Controllers.Models;
-using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.Database.Migrations;
-using Auth.Wiedersehen.Database.Models;
+using Auth.Wiedersehen.Emails;
 using Auth.Wiedersehen.Exceptions;
 using Auth.Wiedersehen.Localization;
+using Auth.Wiedersehen.Users;
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -43,37 +42,12 @@ internal static class WebAppExtensions
         builder.Services.AddOpenApi();
 
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("ApplicationDB"))
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString(ConfigurationKey.ConnectionString.ApplicationDb)
+            )
         );
 
-        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders();
-
-        builder.Services
-            .AddIdentityServer()
-            .AddServerSideSessions()
-            .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseNpgsql(
-                            builder.Configuration.GetConnectionString("ConfigurationDB"),
-                            sql => sql.MigrationsAssembly(GetMigrationAssembly())
-                        );
-                }
-            )
-            .AddOperationalStore(options =>
-                {
-                    options.ConfigureDbContext = b =>
-                        b.UseNpgsql(
-                            builder.Configuration.GetConnectionString("PersistentGrandDB"),
-                            sql => sql.MigrationsAssembly(GetMigrationAssembly())
-                        );
-                }
-            )
-            .AddAspNetIdentity<ApplicationUser>();
-
-        builder.Services.AddAuthentication();
+        builder.AddAuthentication();
 
         return builder;
     }
@@ -91,14 +65,8 @@ internal static class WebAppExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseIdentityServer();
-        app.UseAuthorization();
+        app.UseAuthentication();
 
         return app;
-    }
-
-    private static string? GetMigrationAssembly()
-    {
-        return typeof(Program).Assembly.GetName().Name;
     }
 }

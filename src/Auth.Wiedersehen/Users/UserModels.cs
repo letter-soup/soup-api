@@ -2,7 +2,7 @@ using Auth.Wiedersehen.Configuration;
 using Auth.Wiedersehen.Localization;
 using FluentValidation;
 
-namespace Auth.Wiedersehen.Controllers.Models;
+namespace Auth.Wiedersehen.Users;
 
 public record CreateUserRequest(string Email, string Password, bool TermsAccepted);
 public record CreateUserResponse(string UserId);

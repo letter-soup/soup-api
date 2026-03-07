@@ -1,7 +1,7 @@
 using Auth.Wiedersehen.Configuration;
-using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.Localization;
 using Auth.Wiedersehen.UnitTests.Extensions;
+using Auth.Wiedersehen.Users;
 using FluentValidation.TestHelper;
 using Microsoft.Extensions.Configuration;
 

@@ -1,8 +1,8 @@
-using Auth.Wiedersehen.Database.Models;
 using Auth.Wiedersehen.Extensions;
+using Auth.Wiedersehen.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace Auth.Wiedersehen.Controllers.Services;
+namespace Auth.Wiedersehen.Emails;
 
 internal sealed class EmailService(UserManager<ApplicationUser> userManager) : IEmailService
 {

@@ -1,8 +1,6 @@
 using Auth.Wiedersehen.Configuration;
-using Auth.Wiedersehen.Controllers.Services;
 using Auth.Wiedersehen.Localization;
 using Microsoft.Extensions.Configuration;
-using Moq;
 
 namespace Auth.Wiedersehen.UnitTests;
 

@@ -22,7 +22,7 @@ namespace Auth.Wiedersehen.Migrations.ApplicationDb
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Auth.Wiedersehen.Database.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Auth.Wiedersehen.Users.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -232,7 +232,7 @@ namespace Auth.Wiedersehen.Migrations.ApplicationDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Auth.Wiedersehen.Database.Models.ApplicationUser", null)
+                    b.HasOne("Auth.Wiedersehen.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -241,7 +241,7 @@ namespace Auth.Wiedersehen.Migrations.ApplicationDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Auth.Wiedersehen.Database.Models.ApplicationUser", null)
+                    b.HasOne("Auth.Wiedersehen.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -256,7 +256,7 @@ namespace Auth.Wiedersehen.Migrations.ApplicationDb
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Auth.Wiedersehen.Database.Models.ApplicationUser", null)
+                    b.HasOne("Auth.Wiedersehen.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -265,7 +265,7 @@ namespace Auth.Wiedersehen.Migrations.ApplicationDb
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Auth.Wiedersehen.Database.Models.ApplicationUser", null)
+                    b.HasOne("Auth.Wiedersehen.Users.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

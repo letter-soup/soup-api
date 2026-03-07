@@ -1,4 +1,4 @@
-using Auth.Wiedersehen.Database.Models;
+using Auth.Wiedersehen.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

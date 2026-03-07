@@ -1,4 +1,4 @@
-namespace Auth.Wiedersehen.Controllers.Services;
+namespace Auth.Wiedersehen.Emails;
 
 public interface IEmailService
 {

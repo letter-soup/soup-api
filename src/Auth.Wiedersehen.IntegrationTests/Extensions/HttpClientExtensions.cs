@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using Auth.Wiedersehen.Controllers.Models;
+using Auth.Wiedersehen.Users;
 
 namespace Auth.Wiedersehen.IntegrationTests.Extensions;
 

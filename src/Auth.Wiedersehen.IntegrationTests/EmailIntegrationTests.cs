@@ -1,6 +1,6 @@
 using System.Net;
-using Auth.Wiedersehen.Controllers.Models;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.Users;
 
 namespace Auth.Wiedersehen.IntegrationTests;
 
