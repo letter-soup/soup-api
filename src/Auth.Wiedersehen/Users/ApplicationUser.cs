@@ -4,5 +4,5 @@ namespace Auth.Wiedersehen.Users;
 
 public class ApplicationUser : IdentityUser
 {
-    public DateTime TermsAcceptanceTime { get; set; }
+	public DateTime TermsAcceptanceTime { get; set; }
 }

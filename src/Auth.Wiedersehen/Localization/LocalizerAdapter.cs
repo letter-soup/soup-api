@@ -5,6 +5,6 @@ namespace Auth.Wiedersehen.Localization;
 
 internal sealed class LocalizerAdapter(IStringLocalizer<SharedResource> localizer) : ILocalizer
 {
-    public string this[string name] => localizer[name];
-    public string this[string name, params object[] arguments] => localizer[name, arguments];
+	public string this[string name] => localizer[name];
+	public string this[string name, params object[] arguments] => localizer[name, arguments];
 }

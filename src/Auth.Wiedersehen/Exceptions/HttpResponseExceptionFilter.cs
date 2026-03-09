@@ -5,22 +5,21 @@ namespace Auth.Wiedersehen.Exceptions;
 
 internal class HttpResponseExceptionFilter : IOrderedFilter, IActionFilter
 {
-    public int Order => int.MaxValue - 10;
+	public int Order => int.MaxValue - 10;
 
-    public void OnActionExecuting(ActionExecutingContext context)
-    {
-    }
+	public void OnActionExecuting(ActionExecutingContext context)
+	{
+	}
 
-    public void OnActionExecuted(ActionExecutedContext context)
-    {
-        if (context.Exception is not HttpResponseException exception) return;
+	public void OnActionExecuted(ActionExecutedContext context)
+	{
+		if (context.Exception is not HttpResponseException exception) return;
 
-        context.Result = new ObjectResult(null)
-        {
-            Value = new ErrorDetails(exception.StatusCode, exception.Errors),
-            StatusCode = exception.StatusCode
-        };
+		context.Result = new ObjectResult(null)
+		{
+			Value = new ErrorDetails(exception.StatusCode, exception.Errors), StatusCode = exception.StatusCode
+		};
 
-        context.ExceptionHandled = true;
-    }
+		context.ExceptionHandled = true;
+	}
 }

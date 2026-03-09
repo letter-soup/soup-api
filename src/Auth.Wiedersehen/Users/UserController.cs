@@ -9,25 +9,25 @@ namespace Auth.Wiedersehen.Users;
 [Route("api/v1/user")]
 public class UserController(IUserService userService) : Controller
 {
-    private readonly IUserService _userService = userService.Required(nameof(userService));
+	private readonly IUserService _userService = userService.Required(nameof(userService));
 
-    [HttpPost]
-    [ProducesResponseType<CreateUserResponse>(StatusCodes.Status201Created)]
-    [ProducesResponseType<ErrorDetails>(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType<ErrorDetails>(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateUserAsync(
-        [FromServices] IValidator<CreateUserRequest> validator,
-        [FromBody] CreateUserRequest request
-    )
-    {
-        var validationResult = await validator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            throw new HttpResponseException(validationResult.ToKeyValuePairs());
-        }
+	[HttpPost]
+	[ProducesResponseType<CreateUserResponse>(StatusCodes.Status201Created)]
+	[ProducesResponseType<ErrorDetails>(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType<ErrorDetails>(StatusCodes.Status409Conflict)]
+	public async Task<IActionResult> CreateUserAsync(
+		[FromServices] IValidator<CreateUserRequest> validator,
+		[FromBody] CreateUserRequest request
+	)
+	{
+		var validationResult = await validator.ValidateAsync(request);
+		if (!validationResult.IsValid)
+		{
+			throw new HttpResponseException(validationResult.ToKeyValuePairs());
+		}
 
-        var result = await _userService.CreateAsync(request);
+		var result = await _userService.CreateAsync(request);
 
-        return Created(string.Empty, result);
-    }
+		return Created(string.Empty, result);
+	}
 }

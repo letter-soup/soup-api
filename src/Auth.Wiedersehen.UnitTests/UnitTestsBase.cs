@@ -6,30 +6,30 @@ namespace Auth.Wiedersehen.UnitTests;
 
 public class UnitTestsBase
 {
-    protected readonly IConfiguration Configuration;
-    protected readonly IFixture Fixture;
-    protected readonly ILocalizer Localizer;
-    
-    private const int PasswordMinLength = 8;
+	protected readonly IConfiguration Configuration;
+	protected readonly IFixture Fixture;
+	protected readonly ILocalizer Localizer;
 
-    protected UnitTestsBase()
-    {
-        var configMock = new Mock<IConfiguration>();
-        
-        var passwordMinLength = new Mock<IConfigurationSection>();
-        passwordMinLength.Setup(x => x.Value).Returns(PasswordMinLength.ToString());
-        configMock.Setup(x => x.GetSection(ConfigurationKey.Password.MinLength)).Returns(passwordMinLength.Object);
-        
-        Configuration = configMock.Object;
-        Fixture = new Fixture();
-        Localizer = SetupLocalizer();
-    }
+	private const int PasswordMinLength = 8;
 
-    private ILocalizer SetupLocalizer()
-    {
-        var localizerMock = new Mock<ILocalizer>();
-        localizerMock.Setup(x => x[It.IsAny<string>()]).Returns((string key) => key);
-        localizerMock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()]).Returns((string key, object[] _) => key);
-        return localizerMock.Object;
-    }
+	protected UnitTestsBase()
+	{
+		var configMock = new Mock<IConfiguration>();
+
+		var passwordMinLength = new Mock<IConfigurationSection>();
+		passwordMinLength.Setup(x => x.Value).Returns(PasswordMinLength.ToString());
+		configMock.Setup(x => x.GetSection(ConfigurationKey.Password.MinLength)).Returns(passwordMinLength.Object);
+
+		Configuration = configMock.Object;
+		Fixture = new Fixture();
+		Localizer = SetupLocalizer();
+	}
+
+	private ILocalizer SetupLocalizer()
+	{
+		var localizerMock = new Mock<ILocalizer>();
+		localizerMock.Setup(x => x[It.IsAny<string>()]).Returns((string key) => key);
+		localizerMock.Setup(x => x[It.IsAny<string>(), It.IsAny<object[]>()]).Returns((string key, object[] _) => key);
+		return localizerMock.Object;
+	}
 }

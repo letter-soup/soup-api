@@ -6,24 +6,22 @@ namespace Auth.Wiedersehen.Users;
 
 internal sealed class UserService(UserManager<ApplicationUser> userManager) : IUserService
 {
-    private readonly UserManager<ApplicationUser> _userManager = userManager.Required(nameof(userManager));
+	private readonly UserManager<ApplicationUser> _userManager = userManager.Required(nameof(userManager));
 
-    public async Task<CreateUserResponse> CreateAsync(CreateUserRequest request)
-    {
-        var user = new ApplicationUser
-        {
-            Email = request.Email,
-            UserName = request.Email,
-            TermsAcceptanceTime = DateTime.UtcNow,
-        };
+	public async Task<CreateUserResponse> CreateAsync(CreateUserRequest request)
+	{
+		var user = new ApplicationUser
+		{
+			Email = request.Email, UserName = request.Email, TermsAcceptanceTime = DateTime.UtcNow,
+		};
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+		var result = await _userManager.CreateAsync(user, request.Password);
 
-        if (!result.Succeeded)
-        {
-            throw new HttpResponseException(result.ToKeyValuePairs(), StatusCodes.Status409Conflict);
-        }
+		if (!result.Succeeded)
+		{
+			throw new HttpResponseException(result.ToKeyValuePairs(), StatusCodes.Status409Conflict);
+		}
 
-        return new CreateUserResponse(user.Id);
-    }
+		return new CreateUserResponse(user.Id);
+	}
 }

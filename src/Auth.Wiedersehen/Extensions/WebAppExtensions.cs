@@ -13,60 +13,61 @@ namespace Auth.Wiedersehen.Extensions;
 
 internal static class WebAppExtensions
 {
-    public static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
-    {
-        builder.Host.UseSerilog((ctx, lc) => lc
-            .WriteTo.Console(
-                outputTemplate:
-                "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}"
-            )
-            .Enrich.FromLogContext()
-            .ReadFrom.Configuration(ctx.Configuration),
-            preserveStaticLogger: true
-        );
+	public static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
+	{
+		builder.Host.UseSerilog(
+			(ctx, lc) => lc
+				.WriteTo.Console(
+					outputTemplate:
+					"[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}"
+				)
+				.Enrich.FromLogContext()
+				.ReadFrom.Configuration(ctx.Configuration),
+			preserveStaticLogger: true
+		);
 
-        return builder;
-    }
+		return builder;
+	}
 
-    public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
-    {
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<IEmailService, EmailService>();
-        builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
-        builder.Services.AddScoped<IValidator<EmailAvailableRequest>, EmailAvailableRequestValidator>();
+	public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
+	{
+		builder.Services.AddScoped<IUserService, UserService>();
+		builder.Services.AddScoped<IEmailService, EmailService>();
+		builder.Services.AddScoped<IValidator<CreateUserRequest>, CreateUserRequestValidator>();
+		builder.Services.AddScoped<IValidator<EmailAvailableRequest>, EmailAvailableRequestValidator>();
 
-        builder.AddLocalization();
-        builder.AddConfiguration();
-        
-        builder.Services.AddControllers(options => options.Filters.Add<HttpResponseExceptionFilter>());
-        builder.Services.AddOpenApi();
+		builder.AddLocalization();
+		builder.AddConfiguration();
 
-        builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(
-                builder.Configuration.GetConnectionString(ConfigurationKey.ConnectionString.ApplicationDb)
-            )
-        );
+		builder.Services.AddControllers(options => options.Filters.Add<HttpResponseExceptionFilter>());
+		builder.Services.AddOpenApi();
 
-        builder.AddAuthentication();
+		builder.Services.AddDbContext<ApplicationDbContext>(options =>
+			options.UseNpgsql(
+				builder.Configuration.GetConnectionString(ConfigurationKey.ConnectionString.ApplicationDb)
+			)
+		);
 
-        return builder;
-    }
+		builder.AddAuthentication();
 
-    public static WebApplication ConfigurePipeline(this WebApplication app)
-    {
-        app.UseLocalization();
+		return builder;
+	}
 
-        app.UseSerilogRequestLogging();
-        app.MapControllers();
-        app.MapOpenApi();
+	public static WebApplication ConfigurePipeline(this WebApplication app)
+	{
+		app.UseLocalization();
 
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+		app.UseSerilogRequestLogging();
+		app.MapControllers();
+		app.MapOpenApi();
 
-        app.UseAuthentication();
+		if (app.Environment.IsDevelopment())
+		{
+			app.UseDeveloperExceptionPage();
+		}
 
-        return app;
-    }
+		app.UseAuthentication();
+
+		return app;
+	}
 }
