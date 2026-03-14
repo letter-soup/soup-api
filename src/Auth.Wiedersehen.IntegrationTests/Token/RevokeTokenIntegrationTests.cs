@@ -1,10 +1,11 @@
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.IntegrationTests.Fixtures;
 using Auth.Wiedersehen.Users;
 using Duende.IdentityModel.Client;
 
 namespace Auth.Wiedersehen.IntegrationTests.Token;
 
-public class RevokeTokenIntegrationTests : IntegrationTestBase
+public class RevokeTokenIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
 {
 	[Fact]
 	public async Task RevokeToken_GivenValidToken_ShouldSucceed()

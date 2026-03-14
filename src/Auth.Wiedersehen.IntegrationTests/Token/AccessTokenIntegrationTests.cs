@@ -1,10 +1,11 @@
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.IntegrationTests.Fixtures;
 using Auth.Wiedersehen.Users;
 using Duende.IdentityModel.Client;
 
 namespace Auth.Wiedersehen.IntegrationTests.Token;
 
-public class AccessTokenIntegrationTests : IntegrationTestBase
+public class AccessTokenIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
 {
 	[Fact]
 	public async Task AccessToken_GivenValidCredentials_ShouldSucceed()

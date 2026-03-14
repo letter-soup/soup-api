@@ -1,10 +1,11 @@
 using System.Net;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.IntegrationTests.Fixtures;
 using Auth.Wiedersehen.Users;
 
 namespace Auth.Wiedersehen.IntegrationTests;
 
-public class EmailIntegrationTests : IntegrationTestBase
+public class EmailIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
 {
 	[Fact]
 	public async Task IsAvailable_GivenNewEmail_Returns200OK()

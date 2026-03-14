@@ -1,10 +1,11 @@
 using System.Net;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.IntegrationTests.Fixtures;
 using Auth.Wiedersehen.Users;
 
 namespace Auth.Wiedersehen.IntegrationTests;
 
-public class UserIntegrationTests : IntegrationTestBase
+public class UserIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
 {
 	[Fact]
 	public async Task CreateUser_GivenValidData_Returns201Created()
