@@ -1,16 +1,13 @@
-using Auth.Wiedersehen.Database.Migrations;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
 using Auth.Wiedersehen.IntegrationTests.Fixtures;
 using Auth.Wiedersehen.Users;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Auth.Wiedersehen.IntegrationTests;
 
 [Collection(nameof(IntegrationTestsCollection))]
 public abstract class IntegrationTestBase(IntegrationTestFixture fixture) : IAsyncLifetime
 {
-	private IServiceScope _transactionScope = null!;
+	// private IServiceScope _transactionScope = null!;
 
 	protected HttpClient Client { get; private set; } = null!;
 	protected readonly IFixture Fixture = new Fixture();
@@ -18,22 +15,23 @@ public abstract class IntegrationTestBase(IntegrationTestFixture fixture) : IAsy
 	protected const string TestClientId = "test-client";
 	protected const string TestClientSecret = "test-secret";
 
-	public async Task InitializeAsync()
+	public ValueTask InitializeAsync()
 	{
-		Client = fixture.Factory.CreateClient();
-
-		// Start a per-test transaction for isolation
-		_transactionScope = fixture.Factory.Services.CreateScope();
-		ApplicationDbContext dbContext = _transactionScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-		await dbContext.Database.BeginTransactionAsync();
+		try
+		{
+			Client = fixture.Factory.CreateClient();
+			return ValueTask.CompletedTask;
+		}
+		catch (Exception exception)
+		{
+			return ValueTask.FromException(exception);
+		}
 	}
 
-	public async Task DisposeAsync()
+	public ValueTask DisposeAsync()
 	{
-		// Roll back the transaction to restore DB state
-		ApplicationDbContext dbContext = _transactionScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-		await dbContext.Database.CurrentTransaction!.RollbackAsync();
-		_transactionScope.Dispose();
+		GC.SuppressFinalize(this);
+		return ValueTask.CompletedTask;
 	}
 
 	protected async Task<CreateUserRequest> RegisterUserAsync()

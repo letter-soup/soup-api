@@ -23,7 +23,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
 	internal WebApplicationFactory<Program> Factory { get; private set; } = null!;
 
-	public async Task InitializeAsync()
+	public async ValueTask InitializeAsync()
 	{
 		// 1. Start the database container
 		await _dbContainer.StartAsync();
@@ -114,7 +114,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 		}
 	}
 
-	public async Task DisposeAsync()
+	public async ValueTask DisposeAsync()
 	{
 		await Factory.DisposeAsync();
 		await _dbContainer.StopAsync();
