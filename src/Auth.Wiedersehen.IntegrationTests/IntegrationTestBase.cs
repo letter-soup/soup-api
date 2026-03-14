@@ -2,6 +2,7 @@ using Auth.Wiedersehen.Configuration;
 using Auth.Wiedersehen.Database.Migrations;
 using Auth.Wiedersehen.IntegrationTests.Extensions;
 using Auth.Wiedersehen.Seeder.Dataset;
+using Auth.Wiedersehen.Users;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
 using Duende.IdentityServer.Models;
@@ -138,5 +139,12 @@ public abstract class IntegrationTestBase : IAsyncLifetime
 	{
 		await _dbContainer.StopAsync();
 		await _factory.DisposeAsync();
+	}
+
+	protected async Task<CreateUserRequest> RegisterUserAsync()
+	{
+		var request = new CreateUserRequest(Fixture.CreateEmail(), Fixture.CreatePassword(), true);
+		await Client.CreateUserAsync(request, HttpClientMode.VerifySuccess);
+		return request;
 	}
 }

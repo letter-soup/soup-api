@@ -13,12 +13,12 @@ public class UserIntegrationTests : IntegrationTestBase
 		var request = new CreateUserRequest(Fixture.CreateEmail(), Fixture.CreatePassword(), true);
 
 		// Act
-		var response = await Client.CreateUserAsync(request);
+		HttpResponseMessage response = await Client.CreateUserAsync(request);
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.Created);
 
-		var content = await response.As<CreateUserResponse>();
+		CreateUserResponse? content = await response.As<CreateUserResponse>();
 		content.Should().NotBeNull();
 		content.UserId.Should().NotBeNullOrWhiteSpace();
 	}
@@ -27,12 +27,11 @@ public class UserIntegrationTests : IntegrationTestBase
 	public async Task CreateUser_GivenDuplicateEmail_Returns409Conflict()
 	{
 		// Arrange
-		var email = Fixture.CreateEmail();
-		var request = new CreateUserRequest(email, Fixture.CreatePassword(), true);
+		var request = new CreateUserRequest(Fixture.CreateEmail(), Fixture.CreatePassword(), true);
 		await Client.CreateUserAsync(request, HttpClientMode.VerifySuccess);
 
 		// Act
-		var response = await Client.CreateUserAsync(request);
+		HttpResponseMessage response = await Client.CreateUserAsync(request);
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.Conflict);
@@ -49,7 +48,7 @@ public class UserIntegrationTests : IntegrationTestBase
 		);
 
 		// Act
-		var response = await Client.CreateUserAsync(request);
+		HttpResponseMessage response = await Client.CreateUserAsync(request);
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -62,7 +61,7 @@ public class UserIntegrationTests : IntegrationTestBase
 		var request = new CreateUserRequest(Fixture.CreateEmail(), Fixture.CreatePassword(), false);
 
 		// Act
-		var response = await Client.CreateUserAsync(request);
+		HttpResponseMessage response = await Client.CreateUserAsync(request);
 
 		// Assert
 		response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
