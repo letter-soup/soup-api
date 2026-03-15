@@ -1,4 +1,4 @@
-name: CI
+name: Auth.Wiedersehen CI
 
 on:
   push:
