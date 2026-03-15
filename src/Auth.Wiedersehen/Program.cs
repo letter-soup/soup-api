@@ -1,36 +1,37 @@
-﻿using Serilog;
+﻿using Auth.Wiedersehen.Extensions;
+using Serilog;
 
 namespace Auth.Wiedersehen;
 
-internal static class Program
+internal sealed class Program
 {
-    public static async Task Main(string[] args)
-    {
-        Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
-        Log.Information("Starting up");
+	public static async Task Main(string[] args)
+	{
+		Log.Logger = new LoggerConfiguration()
+			.WriteTo.Console()
+			.CreateBootstrapLogger();
+		Log.Information("Starting up");
 
-        try
-        {
-            var builder = WebApplication.CreateBuilder(args);
+		try
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            var app = builder
-                .ConfigureLogging()
-                .ConfigureServices()
-                .Build();
+			var app = builder
+				.ConfigureLogging()
+				.ConfigureServices()
+				.Build();
 
-            await app.ConfigurePipeline().RunAsync();
-        }
-        catch (Exception e)
-        {
-            Log.Fatal(e, "Unhandled exception");
-            throw;
-        }
-        finally
-        {
-            Log.Information("Shut down complete");
-            await Log.CloseAndFlushAsync();
-        }
-    }
+			await app.ConfigurePipeline().RunAsync();
+		}
+		catch (Exception ex) when (ex.GetType().Name is not nameof(HostAbortedException))
+		{
+			Log.Fatal(ex, "Unhandled exception");
+			throw;
+		}
+		finally
+		{
+			Log.Information("Shut down complete");
+			await Log.CloseAndFlushAsync();
+		}
+	}
 }

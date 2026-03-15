@@ -4,15 +4,17 @@ namespace Soup.Api;
 
 internal static class Program
 {
-    public static async Task Main(string[] args)
-    {
-        var builder = WebApplication.CreateBuilder(args);
+	public static async Task Main(string[] args)
+	{
+		var builder = WebApplication.CreateBuilder(args);
 
-        var app = builder
-            .ConfigureLogging()
-            .ConfigureServices()
-            .Build();
+		var app = builder
+			.ConfigureLogging()
+			.ConfigureServices()
+			.ConfigureAuthentication()
+			.ConfigureAuthorization()
+			.Build();
 
-        await app.ConfigurePipeline().RunAsync();
-    }
+		await app.ConfigurePipeline().RunAsync();
+	}
 }

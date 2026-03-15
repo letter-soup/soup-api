@@ -1,0 +1,49 @@
+using Auth.Wiedersehen.IntegrationTests.Extensions;
+using Auth.Wiedersehen.IntegrationTests.Fixtures;
+using Auth.Wiedersehen.Users;
+using Duende.IdentityModel.Client;
+
+namespace Auth.Wiedersehen.IntegrationTests.Token;
+
+public class AccessTokenIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
+{
+	[Fact]
+	public async Task AccessToken_GivenValidCredentials_ShouldSucceed()
+	{
+		// Arrange
+		CreateUserRequest user = await RegisterUserAsync();
+
+		// Act
+		TokenResponse tokenResponse = await Client.RequestPasswordTokenAsync(
+			TestClientId,
+			TestClientSecret,
+			user.Email,
+			user.Password
+		);
+
+		// Assert
+		tokenResponse.IsError.Should().BeFalse(tokenResponse.Error);
+		tokenResponse.AccessToken.Should().NotBeNullOrWhiteSpace();
+		tokenResponse.RefreshToken.Should().BeNullOrWhiteSpace();
+	}
+
+	[Fact]
+	public async Task AccessToken_GivenWrongCredentials_ShouldFail()
+	{
+		// Arrange
+		CreateUserRequest user = await RegisterUserAsync();
+		var wrongPassword = Fixture.CreatePassword();
+
+		// Act
+		TokenResponse tokenResponse = await Client.RequestPasswordTokenAsync(
+			TestClientId,
+			TestClientSecret,
+			user.Email,
+			wrongPassword
+		);
+
+		// Assert
+		tokenResponse.IsError.Should().BeTrue();
+		tokenResponse.Error.Should().Be("invalid_grant");
+	}
+}

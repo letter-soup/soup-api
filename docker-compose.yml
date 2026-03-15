@@ -1,18 +1,63 @@
 services:
-  soup.api:
+  soup-api:
     image: soup.api
+    restart: on-failure
     build:
       context: ./src/Soup.Api
       dockerfile: ./Dockerfile
     ports:
       - '5000:8080'
-  
-  auth.wiedersehen:
-    image: auth.wiedersehen
+    depends_on:
+      - auth-wiedersehen-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      SOUP_API_Auth__Jwt__Authority: http://auth-wiedersehen-api:8080
+      SOUP_API_Auth__Jwt__ValidateAudience: false
+      SOUP_API_Auth__Jwt__ValidIssuers__0: http://auth-wiedersehen-api:8080
+      SOUP_API_Auth__Jwt__ValidIssuers__1: http://localhost:5002
+      SOUP_API_Auth__Jwt__RequireHttpsMetadata: false
+
+  auth-wiedersehen-api:
+    image: auth-wiedersehen
     build:
       context: ./src/Auth.Wiedersehen
       dockerfile: ./Dockerfile
     ports:
-      - '5002:8080'
+      - '5002:5002'
+    depends_on:
+      - auth-wiedersehen-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://0.0.0.0:5002"
+      AUTHW_ConnectionStrings__ApplicationDB: ${AW_APPLICATION_DB}
+      AUTHW_ConnectionStrings__ConfigurationDB: ${AW_CONFIGURATION_DB}
+      AUTHW_ConnectionStrings__PersistentGrandDB: ${AW_PERSISTENT_GRAND_DB}
+      AUTHW_UI__LoginUrl: ${AW_UI_HOST}/sign-in
+      AUTHW_UI__CookieLoginUrl: ${AW_UI_HOST}/cookie/sign-in
 
+  auth-wiedersehen-seeder:
+    image: auth-wiedersehen
+    build:
+      context: ./src/Auth.Wiedersehen.Seeder
+      dockerfile: ./Dockerfile
+    depends_on:
+      - auth-wiedersehen-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      AWSEED_ConnectionStrings__ApplicationDB: ${AW_APPLICATION_DB}
+      AWSEED_ConnectionStrings__ConfigurationDB: ${AW_CONFIGURATION_DB}
+      AWSEED_ConnectionStrings__PersistentGrandDB: ${AW_PERSISTENT_GRAND_DB}
 
+  auth-wiedersehen-db:
+    image: postgres:17-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: ${DB_ADMIN_PWD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 134217728 # 128*2^20 bytes = 128Mb
