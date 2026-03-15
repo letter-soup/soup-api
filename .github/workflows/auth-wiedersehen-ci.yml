@@ -55,7 +55,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v7
         with:
-          context: ./Auth.Wiedersehen
+          context: ./src/Auth.Wiedersehen
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
