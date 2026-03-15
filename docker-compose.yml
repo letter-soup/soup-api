@@ -61,18 +61,3 @@ services:
         target: /dev/shm
         tmpfs:
           size: 134217728 # 128*2^20 bytes = 128Mb
-
-#  auth-wiedersehen-db:
-#    image: mcr.microsoft.com/mssql/server:2022-latest
-#    restart: always
-#    environment:
-#      ACCEPT_EULA: Y
-#      SA_PASSWORD: ${DB_ADMIN_PWD}
-#      MSSQL_PID: Developer
-#    ports:
-#      - "1433:1433"
-#    volumes:
-#      - auth_sql_vol:/var/opt/mssql
-
-volumes:
-  auth_sql_vol:
