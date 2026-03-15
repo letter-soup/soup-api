@@ -17,9 +17,7 @@ namespace Auth.Wiedersehen.IntegrationTests.Fixtures;
 [UsedImplicitly]
 public class IntegrationTestFixture : IAsyncLifetime
 {
-	private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-		.WithImage("postgres:17")
-		.Build();
+	private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder("postgres:17").Build();
 
 	internal WebApplicationFactory<Program> Factory { get; private set; } = null!;
 
