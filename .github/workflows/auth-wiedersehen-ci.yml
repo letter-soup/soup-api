@@ -33,7 +33,7 @@ jobs:
 
       - name: Test
         working-directory: ./src
-        run: dotnet test Auth.Wiedersehen.slnx --configuration Release --no-build
+        run: dotnet test --solution Auth.Wiedersehen.slnx --configuration Release --no-build
 
   docker-build:
     runs-on: ubuntu-latest
