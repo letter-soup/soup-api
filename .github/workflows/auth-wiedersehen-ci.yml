@@ -11,49 +11,49 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
 
       - name: Cache NuGet packages
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.props', '**/*.targets') }}
           restore-keys: ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore src/Auth.Wiedersehen.sln
+        run: dotnet restore src/Auth.Wiedersehen.slnx
 
       - name: Build
-        run: dotnet build src/Auth.Wiedersehen.sln --configuration Release --no-restore
+        run: dotnet build src/Auth.Wiedersehen.slnx --configuration Release --no-restore
 
       - name: Test
         working-directory: ./src
-        run: dotnet test Auth.Wiedersehen.sln --configuration Release --no-build
+        run: dotnet test Auth.Wiedersehen.slnx --configuration Release --no-build
 
   docker-build:
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Docker metadata
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ghcr.io/${{ github.repository }}
           tags: type=sha,prefix=
 
       - name: Build Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: ./Auth.Wiedersehen
           push: false
@@ -62,7 +62,7 @@ jobs:
           outputs: type=docker,dest=/tmp/image.tar
 
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: docker-image
           path: /tmp/image.tar
@@ -76,7 +76,7 @@ jobs:
       packages: write
     steps:
       - name: Download Docker image artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: docker-image
           path: /tmp
@@ -85,7 +85,7 @@ jobs:
         run: docker load -i /tmp/image.tar
 
       - name: Log in to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
