@@ -1,6 +1,6 @@
 namespace Soup.Api.Exceptions;
 
-public class ValueRequiredException : SoupException
+public class ValueRequiredException : BaseApiException
 {
 	private const string ErrorPrefix = "Missing required argument: {0}";
 

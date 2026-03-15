@@ -5,3 +5,9 @@
 bin/
 
 obj/
+
+.DS_Store
+
+*.user
+
+.junie/
