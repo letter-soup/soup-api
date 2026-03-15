@@ -12,7 +12,9 @@ internal sealed class UserService(UserManager<ApplicationUser> userManager) : IU
 	{
 		var user = new ApplicationUser
 		{
-			Email = request.Email, UserName = request.Email, TermsAcceptanceTime = DateTime.UtcNow,
+			Email = request.Email,
+			UserName = request.Email,
+			TermsAcceptanceTime = DateTime.UtcNow,
 		};
 
 		var result = await _userManager.CreateAsync(user, request.Password);

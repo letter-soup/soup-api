@@ -8,7 +8,7 @@ namespace Auth.Wiedersehen.IntegrationTests.Token;
 public class RefreshTokenIntegrationTests(IntegrationTestFixture fixture) : IntegrationTestBase(fixture)
 {
 	[Fact]
-	public async Task Login_RefreshToken_GivenValidCredentials_ShouldSucceed()
+	public async Task RefreshToken_GivenValidCredentials_ShouldSucceed()
 	{
 		// Arrange
 		CreateUserRequest user = await RegisterUserAsync();

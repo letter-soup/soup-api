@@ -32,29 +32,31 @@ public class IntegrationTestFixture : IAsyncLifetime
 		// 2. Create and configure the shared WebApplicationFactory
 		Factory = new WebApplicationFactory<Program>()
 			.WithWebHostBuilder(builder =>
-			{
-				builder.UseEnvironment("Tests");
-				builder.ConfigureAppConfiguration((_, config) =>
 				{
-					config.AddInMemoryCollection(
-						new Dictionary<string, string?>
+					builder.UseEnvironment("Tests");
+					builder.ConfigureAppConfiguration((_, config) =>
 						{
-							{
-								$"ConnectionStrings:{ConfigurationKey.ConnectionString.ApplicationDb}",
-								connectionString
-							},
-							{
-								$"ConnectionStrings:{ConfigurationKey.ConnectionString.ConfigurationDb}",
-								connectionString
-							},
-							{
-								$"ConnectionStrings:{ConfigurationKey.ConnectionString.PersistentGrandDb}",
-								connectionString
-							}
+							config.AddInMemoryCollection(
+								new Dictionary<string, string?>
+								{
+									{
+										$"ConnectionStrings:{ConfigurationKey.ConnectionString.ApplicationDb}",
+										connectionString
+									},
+									{
+										$"ConnectionStrings:{ConfigurationKey.ConnectionString.ConfigurationDb}",
+										connectionString
+									},
+									{
+										$"ConnectionStrings:{ConfigurationKey.ConnectionString.PersistentGrandDb}",
+										connectionString
+									}
+								}
+							);
 						}
 					);
-				});
-			});
+				}
+			);
 
 		// 3. Run migrations once
 		using IServiceScope scope = Factory.Services.CreateScope();
@@ -85,7 +87,12 @@ public class IntegrationTestFixture : IAsyncLifetime
 					ClientId = "test-client",
 					ClientSecrets = { new Secret("test-secret".Sha256()) },
 					AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-					AllowedScopes = { "openid", "profile", "soup" },
+					AllowedScopes =
+					{
+						"openid",
+						"profile",
+						"soup"
+					},
 					AllowOfflineAccess = true
 				}.ToEntity()
 			);
