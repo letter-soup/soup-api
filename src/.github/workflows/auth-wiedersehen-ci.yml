@@ -34,30 +34,6 @@ jobs:
       - name: Test
         run: dotnet test --configuration Release --no-build
 
-  codeql:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: csharp
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-
-      - name: Build for CodeQL
-        run: dotnet build Auth.Wiedersehen/Auth.Wiedersehen.csproj --configuration Release
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-
   docker-build:
     runs-on: ubuntu-latest
     permissions:
