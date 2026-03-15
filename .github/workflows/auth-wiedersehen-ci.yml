@@ -26,13 +26,14 @@ jobs:
           restore-keys: ${{ runner.os }}-nuget-
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore src/Auth.Wiedersehen.sln
 
       - name: Build
-        run: dotnet build Auth.Wiedersehen/Auth.Wiedersehen.csproj --configuration Release --no-restore
+        run: dotnet build src/Auth.Wiedersehen.sln --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test --configuration Release --no-build
+        working-directory: ./src
+        run: dotnet test Auth.Wiedersehen.sln --configuration Release --no-build
 
   docker-build:
     runs-on: ubuntu-latest

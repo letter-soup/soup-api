@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Meta/">
+    <File Path="../.gitignore" />
+    <File Path="../docker-compose.yml" />
+    <File Path="../README.md" />
+  </Folder>
+  <Project Path="Auth.Wiedersehen.IntegrationTests/Auth.Wiedersehen.IntegrationTests.csproj" />
+  <Project Path="Auth.Wiedersehen.Seeder/Auth.Wiedersehen.Seeder.csproj" />
+  <Project Path="Auth.Wiedersehen.UnitTests/Auth.Wiedersehen.UnitTests.csproj" />
+  <Project Path="Auth.Wiedersehen/Auth.Wiedersehen.csproj" />
+</Solution>
